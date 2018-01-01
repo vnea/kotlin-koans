@@ -20,11 +20,49 @@ fun task41(): Nothing = TODO(
 )
 
 fun List<String>.partitionWordsAndLines(): Pair<List<String>, List<String>> {
-    task41()
-//    return partitionTo(ArrayList<String>(), ArrayList()) { s -> !s.contains(" ") }
+    return partitionTo(ArrayList<String>(), ArrayList()) { s -> !s.contains(" ") }
 }
 
 fun Set<Char>.partitionLettersAndOtherSymbols(): Pair<Set<Char>, Set<Char>> {
-    task41()
-//    return partitionTo(HashSet<Char>(), HashSet()) { c -> c in 'a'..'z' || c in 'A'..'Z'}
+    return partitionTo(HashSet<Char>(), HashSet()) { c -> c in 'a'..'z' || c in 'A'..'Z'}
 }
+
+// BAD VERSION
+fun List<String>.partitionTo(words: ArrayList<String>, lines: ArrayList<String>, predicate: (String) -> Boolean): Pair<List<String>, List<String>> {
+    for (element in this) {
+        if (predicate(element)) {
+            words.add(element)
+        }
+        else {
+            lines.add(element)
+        }
+    }
+
+    return Pair(words, lines)
+}
+
+// BAD VERSION
+fun Set<Char>.partitionTo(letters: HashSet<Char>, otherSymbols: HashSet<Char>, predicate: (Char) -> Boolean): Pair<Set<Char>, Set<Char>>  {
+    for (element in this) {
+        if (predicate(element)) {
+            letters.add(element)
+        }
+        else {
+            otherSymbols.add(element)
+        }
+    }
+
+    return Pair(letters, otherSymbols)
+}
+
+// BEST VERSION
+//fun <T, C: MutableCollection<T>> Collection<T>.partitionTo(first: C, second: C, predicate: (T) -> Boolean): Pair<C, C> {
+//    for (element in this) {
+//        if (predicate(element)) {
+//            first.add(element)
+//        } else {
+//            second.add(element)
+//        }
+//    }
+//    return Pair(first, second)
+//}
